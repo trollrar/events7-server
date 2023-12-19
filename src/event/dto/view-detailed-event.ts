@@ -1,19 +1,8 @@
 import { Exclude, Expose } from 'class-transformer';
+import { ViewEventDto } from './view-event.dto';
 
 @Exclude()
-export class ViewDetailedEventDto {
-  @Expose()
-  readonly id: number;
-
-  @Expose()
-  readonly name: string;
-
+export class ViewDetailedEventDto extends ViewEventDto {
   @Expose()
   readonly description: string;
-
-  @Expose()
-  readonly type: string;
-
-  @Expose()
-  readonly priority: number;
 }
