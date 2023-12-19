@@ -1,5 +1,4 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { Min, Max } from 'class-validator';
 
 export enum EventType {
   CROSS_PROMO = 'crosspromo',
@@ -27,7 +26,5 @@ export class Event {
   type: string;
 
   @Column({ type: 'smallint' })
-  @Min(0)
-  @Max(10)
   priority: number;
 }

@@ -8,6 +8,9 @@ import {
   Paginated,
   PaginateQuery,
 } from 'nestjs-paginate';
+import { CreateEventDto } from './dto/create-event.dto';
+import { plainToInstance } from 'class-transformer';
+import { UpdateEventDto } from './dto/update-event.dto';
 
 @Injectable()
 export class EventService {
@@ -16,7 +19,7 @@ export class EventService {
     private eventRepository: Repository<Event>,
   ) {}
 
-  async findAll(query: PaginateQuery): Promise<Paginated<Event>> {
+  findAll(query: PaginateQuery): Promise<Paginated<Event>> {
     return paginate(query, this.eventRepository, {
       sortableColumns: ['id', 'name', 'type', 'priority'],
       filterableColumns: {
@@ -31,5 +34,26 @@ export class EventService {
         name: [FilterOperator.ILIKE],
       },
     });
+  }
+
+  findOne(id: number): Promise<Event> {
+    return this.eventRepository.findOneBy({ id });
+  }
+
+  create(createEventDto: CreateEventDto): Promise<Event> {
+    return this.eventRepository.save(plainToInstance(Event, createEventDto));
+  }
+
+  async update(id: number, updateEventDto: UpdateEventDto): Promise<Event> {
+    await this.eventRepository.update(
+      id,
+      plainToInstance(Event, updateEventDto),
+    );
+    return this.findOne(id);
+  }
+
+  async remove(id: number): Promise<boolean> {
+    const result = await this.eventRepository.delete(id);
+    return result.affected === 1;
   }
 }
