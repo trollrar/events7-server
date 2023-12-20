@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { EventService } from './event.service';
 import { Paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
@@ -14,6 +15,7 @@ import { CreateEventDto } from './dto/create-event.dto';
 import { ViewEventDto } from './dto/view-event.dto';
 import { plainToInstance } from 'class-transformer';
 import { ViewDetailedEventDto } from './dto/view-detailed-event';
+import { TypeAuthGuard } from './type-auth/type-auth.guard';
 
 @Controller()
 export class EventController {
@@ -40,6 +42,7 @@ export class EventController {
   }
 
   @Post()
+  @UseGuards(TypeAuthGuard)
   async create(
     @Body() createEventDto: CreateEventDto,
   ): Promise<ViewDetailedEventDto> {
@@ -50,6 +53,7 @@ export class EventController {
   }
 
   @Patch('/:id')
+  @UseGuards(TypeAuthGuard)
   async update(
     @Param('id') id: number,
     @Body() updateEventDto: UpdateEventDto,
@@ -61,6 +65,7 @@ export class EventController {
   }
 
   @Delete('/:id')
+  @UseGuards(TypeAuthGuard)
   remove(@Param('id') id: number) {
     return this.eventService.remove(id);
   }

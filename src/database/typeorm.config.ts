@@ -1,8 +1,9 @@
 import { DataSourceOptions } from 'typeorm';
 import { join } from 'path';
 import { config } from 'dotenv';
+import { ENV_PATH } from '../app.config';
 
-config({ path: join(__dirname, '..', '..', '.env') });
+config({ path: ENV_PATH });
 
 const dataSourceOptions: DataSourceOptions = {
   type: 'postgres',
