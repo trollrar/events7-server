@@ -32,7 +32,7 @@ export class TypeAuthService {
 
   async isIpAuthorized(ip: string): Promise<boolean> {
     // mock real ip if developing
-    if (appConfig.nodeEnv !== 'PROD' && ip === '::1') {
+    if (appConfig.nodeEnv !== 'production' && ip === '::1') {
       ip = '2001:4860:4860::8888';
     }
 

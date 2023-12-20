@@ -3,10 +3,20 @@ version: '3.1'
 services:
   postgres:
     image: postgres:16.1
-    container_name: ${DB_DATABASE}-postgres
+    container_name: postgres
     environment:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_DATABASE}
     ports:
       - ${DB_PORT}:${DB_PORT}
+
+  nest:
+    container_name: nest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
