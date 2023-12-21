@@ -4,11 +4,11 @@ import {
   ExecutionContext,
   ForbiddenException,
 } from '@nestjs/common';
-import { TypeAuthService } from './type-auth.service';
+import { TypeValidationService } from './type-validation.service';
 
 @Injectable()
-export class TypeAuthGuard implements CanActivate {
-  constructor(private readonly typeAuthService: TypeAuthService) {}
+export class TypeValidationGuard implements CanActivate {
+  constructor(private readonly typeAuthService: TypeValidationService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();

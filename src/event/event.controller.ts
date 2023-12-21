@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Ip,
   Param,
   Patch,
   Post,
@@ -15,11 +16,20 @@ import { CreateEventDto } from './dto/create-event.dto';
 import { ViewEventDto } from './dto/view-event.dto';
 import { plainToInstance } from 'class-transformer';
 import { ViewDetailedEventDto } from './dto/view-detailed-event';
-import { TypeAuthGuard } from './type-auth/type-auth.guard';
+import { TypeValidationGuard } from './type-validation/type-validation.guard';
+import { TypeValidationService } from './type-validation/type-validation.service';
 
 @Controller()
 export class EventController {
-  constructor(private readonly eventService: EventService) {}
+  constructor(
+    private readonly eventService: EventService,
+    private readonly typeValidationService: TypeValidationService,
+  ) {}
+
+  @Get('/is-authorized')
+  async isAuthorized(@Ip() ip: string): Promise<boolean> {
+    return this.typeValidationService.isIpAuthorized(ip);
+  }
 
   @Get()
   async findAll(
@@ -42,7 +52,7 @@ export class EventController {
   }
 
   @Post()
-  @UseGuards(TypeAuthGuard)
+  @UseGuards(TypeValidationGuard)
   async create(
     @Body() createEventDto: CreateEventDto,
   ): Promise<ViewDetailedEventDto> {
@@ -53,7 +63,7 @@ export class EventController {
   }
 
   @Patch('/:id')
-  @UseGuards(TypeAuthGuard)
+  @UseGuards(TypeValidationGuard)
   async update(
     @Param('id') id: number,
     @Body() updateEventDto: UpdateEventDto,
@@ -65,7 +75,7 @@ export class EventController {
   }
 
   @Delete('/:id')
-  @UseGuards(TypeAuthGuard)
+  @UseGuards(TypeValidationGuard)
   remove(@Param('id') id: number) {
     return this.eventService.remove(id);
   }

@@ -1,51 +1,57 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This is an api code challenge project for Outfit7 called Events7 written in [Nest](https://github.com/nestjs/nest) framework. It provides crud endpoints to define client events.
 
-## Installation
+### Features
+- Crud endpoints for events
+- Pagination sorting and filtering of events
+- Event type validation
+- Ip auth check endpoint
 
+### Assumptions
+- Code challenge instructions dictate that only some users can create **add type** events based on their country. If so any user can still edit and delete any events potentially editing events which they cant create. Therefore, users can only edit delete and create **add type** events if they are authorized to do so.
+- I assumed that you would prefer already written .env files for convenience and because it is a code challenge project even though it is a bad practice to do so.
+- Since this project would need to be hosted online to get user ip I mock ip if environment is development and request is coming from localhost.
+
+## Development setup
+
+### 1. Install npm dependencies
 ```bash
 $ npm install
 ```
-
-## Running the app
-
+### 2. Setup postgres database
+Use prepared docker-compose.dev.yml and .env.dev to create postgres database in docker container.
 ```bash
-# development
-$ npm run start
-
-# watch mode
+$ docker-compose --env-file=.env.dev -f docker-compose.dev.yml up --build
+```
+_Alternatively you can setup postgres database on your machine and edit .env.dev appropriately._
+### 3. Run migrations
+```bash
+$ npm run typeorm:migrate
+```
+### 4. Run application
+```bash
 $ npm run start:dev
-
-# production mode
-$ npm run start:prod
+```
+or
+```bash
+$ npm run start:debug
 ```
 
-## Test
+## Production setup
+See environmental variables .env and adjust appropriately
+```bash
+$ docker-compose up --build
+```
+
+## Changing environment
+```bash
+$ docker-compose down
+```
+Then proceed with environment setup
+
+## _Test: TODO_
 
 ```bash
 # unit tests
@@ -58,16 +64,3 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
