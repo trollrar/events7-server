@@ -4,7 +4,7 @@ export enum EventType {
   CROSS_PROMO = 'crosspromo',
   LIVE_OPS = 'liveops',
   APP = 'app',
-  ADD = 'add',
+  ADS = 'ads',
 }
 
 @Entity()

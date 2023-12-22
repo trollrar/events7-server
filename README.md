@@ -1,6 +1,5 @@
 
 ## Description
-
 This is an api code challenge project for Outfit7 called Events7 written in [Nest](https://github.com/nestjs/nest) framework. It provides crud endpoints to define client events.
 
 ### Features
@@ -10,7 +9,7 @@ This is an api code challenge project for Outfit7 called Events7 written in [Nes
 - Ip auth check endpoint
 
 ### Assumptions
-- Code challenge instructions dictate that only some users can create **add type** events based on their country. If so any user can still edit and delete any events potentially editing events which they cant create. Therefore, users can only edit delete and create **add type** events if they are authorized to do so.
+- Code challenge instructions dictate that only some users can create **ads type** events based on their country. If so any user can still edit and delete any events potentially editing events which they cant create. Therefore, users can only edit delete and create **ads type** events if they are authorized to do so.
 - I assumed that you would prefer already written .env files for convenience and because it is a code challenge project even though it is a bad practice to do so.
 - Since this project would need to be hosted online to get user ip I mock ip if environment is development and request is coming from localhost.
 

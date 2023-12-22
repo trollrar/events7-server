@@ -9,7 +9,7 @@ import appConfig from '../../app.config';
 
 @Injectable()
 export class TypeValidationService {
-  private readonly PROTECTED_EVENT_TYPES = ['add'];
+  private readonly PROTECTED_EVENT_TYPES = ['ads'];
   private readonly ADS_ALLOWED_VALUE = 'sure, why not!';
 
   constructor(
