@@ -8,7 +8,7 @@ import authApiConfig from './auth-api.config';
 import appConfig from '../../app.config';
 
 @Injectable()
-export class TypeValidationService {
+export class EventValidationService {
   private readonly PROTECTED_EVENT_TYPES = ['ads'];
   private readonly ADS_ALLOWED_VALUE = 'sure, why not!';
 

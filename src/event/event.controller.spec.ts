@@ -4,40 +4,126 @@ import { EventService } from './event.service';
 import { Event } from './event.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import dataSourceOptions from '../database/typeorm.config';
+import { Paginated, PaginateQuery } from 'nestjs-paginate';
+import { EventValidationService } from './event-validation/event-validation.service';
+import { HttpModule } from '@nestjs/axios';
+import { plainToInstance } from 'class-transformer';
+import { ViewEventSummaryDto } from './dto/view-event-summary.dto';
+import { CreateEventDto } from './dto/create-event.dto';
+import { ViewEventDto } from './dto/view-detailed-event';
 
-describe('AppController', () => {
+const mockEvent1 = {
+  id: 1,
+  name: 'test',
+  description: 'test description',
+  type: 'ads',
+  priority: 0,
+} as Event;
+
+const mockEvent2 = {
+  id: 2,
+  name: 'test 2',
+  description: 'test description 2',
+  type: 'app',
+  priority: 0,
+} as Event;
+
+const mockEventsPage = {
+  data: [mockEvent1, mockEvent2],
+  meta: {
+    itemsPerPage: 2,
+    totalItems: 2,
+    currentPage: 1,
+    totalPages: 1,
+  },
+} as Paginated<Event>;
+
+describe('Event controller', () => {
   let eventController: EventController;
   let eventService: EventService;
+  let eventValidationService: EventValidationService;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       imports: [
         TypeOrmModule.forRoot(dataSourceOptions),
         TypeOrmModule.forFeature([Event]),
+        HttpModule,
       ],
       controllers: [EventController],
-      providers: [EventService],
+      providers: [EventService, EventValidationService],
     }).compile();
 
     eventController = app.get<EventController>(EventController);
     eventService = app.get<EventService>(EventService);
+    eventValidationService = app.get<EventValidationService>(
+      EventValidationService,
+    );
   });
 
-  describe('getEvents', () => {
-    it('should return Event[]', async () => {
-      const mockEvent = [
-        {
-          id: 1,
-          name: 'test',
-          description: 'test description',
-          type: 'add',
-          priority: 0,
-        },
-      ];
-      jest.spyOn(eventService, 'findAll').mockResolvedValue(mockEvent);
-      const result = await eventController.getEvents();
+  describe('findAll', () => {
+    it('should return paginated eventSummaryDtos', async () => {
+      jest.spyOn(eventService, 'findAll').mockResolvedValue(mockEventsPage);
+      const result = await eventController.findAll({} as PaginateQuery);
 
-      expect(result).toEqual(mockEvent);
+      expect(result).toEqual(
+        plainToInstance(Paginated<ViewEventSummaryDto>, {
+          ...mockEventsPage,
+          data: plainToInstance(ViewEventSummaryDto, mockEventsPage.data),
+        }),
+      );
+    });
+  });
+
+  describe('findOne', () => {
+    it('should return eventDto', async () => {
+      jest.spyOn(eventService, 'findOne').mockResolvedValue(mockEvent1);
+      const result = await eventController.findOne(1);
+
+      expect(result).toEqual(plainToInstance(ViewEventDto, mockEvent1));
+    });
+  });
+
+  describe('create', () => {
+    it('should return eventDto', async () => {
+      jest.spyOn(eventService, 'create').mockResolvedValue(mockEvent1);
+      const result = await eventController.create(
+        plainToInstance(CreateEventDto, mockEvent1),
+      );
+
+      expect(result).toEqual(plainToInstance(ViewEventDto, mockEvent1));
+    });
+  });
+
+  describe('update', () => {
+    it('should return eventDto', async () => {
+      jest.spyOn(eventService, 'update').mockResolvedValue(mockEvent1);
+      const result = await eventController.update(
+        1,
+        plainToInstance(CreateEventDto, mockEvent1),
+      );
+
+      expect(result).toEqual(plainToInstance(ViewEventDto, mockEvent1));
+    });
+  });
+
+  describe('remove', () => {
+    it('should return true', async () => {
+      jest.spyOn(eventService, 'remove').mockResolvedValue(true);
+      const result = await eventController.remove(1);
+
+      expect(result).toEqual(true);
+    });
+  });
+
+  describe('isIpAuthorized', () => {
+    it('should return true', async () => {
+      jest
+        .spyOn(eventValidationService, 'isIpAuthorized')
+        .mockResolvedValue(true);
+      const result = await eventController.isAuthorized('::1');
+
+      expect(result).toEqual(true);
     });
   });
 });

@@ -1,8 +1,8 @@
 import { Exclude, Expose } from 'class-transformer';
-import { ViewEventDto } from './view-event.dto';
+import { ViewEventSummaryDto } from './view-event-summary.dto';
 
 @Exclude()
-export class ViewDetailedEventDto extends ViewEventDto {
+export class ViewEventDto extends ViewEventSummaryDto {
   @Expose()
   readonly description: string;
 }

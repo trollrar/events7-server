@@ -1,6 +1,6 @@
 import { Exclude, Expose } from 'class-transformer';
 @Exclude()
-export class ViewEventDto {
+export class ViewEventSummaryDto {
   @Expose()
   readonly id: number;
 
