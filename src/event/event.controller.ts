@@ -16,7 +16,7 @@ import { CreateEventDto } from './dto/create-event.dto';
 import { ViewEventSummaryDto } from './dto/view-event-summary.dto';
 import { plainToInstance } from 'class-transformer';
 import { ViewEventDto } from './dto/view-detailed-event';
-import { EventValidationGuard } from './event-validation/event-validation-guard.service';
+import { EventValidationGuard } from './event-validation/event-validation.guard';
 import { EventValidationService } from './event-validation/event-validation.service';
 
 @Controller()

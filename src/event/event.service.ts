@@ -45,10 +45,15 @@ export class EventService {
   }
 
   async update(id: number, updateEventDto: UpdateEventDto): Promise<Event> {
-    await this.eventRepository.update(
+    const result = await this.eventRepository.update(
       id,
       plainToInstance(Event, updateEventDto),
     );
+
+    if (result.affected === 0) {
+      return null;
+    }
+
     return this.findOne(id);
   }
 

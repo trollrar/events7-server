@@ -50,7 +50,7 @@ $ docker-compose down
 ```
 Then proceed with environment setup
 
-## _Test: TODO_
+## Test
 
 ```bash
 # unit tests

@@ -23,7 +23,7 @@ export class Event {
     enum: EventType,
     default: EventType.APP,
   })
-  type: string;
+  type: EventType;
 
   @Column({ type: 'smallint' })
   priority: number;
