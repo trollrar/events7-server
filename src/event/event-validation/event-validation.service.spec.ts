@@ -16,7 +16,7 @@ describe('EventValidationService', () => {
   let eventValidationService: EventValidationService;
 
   beforeEach(async () => {
-    const app: TestingModule = await Test.createTestingModule({
+    const module: TestingModule = await Test.createTestingModule({
       imports: [
         TypeOrmModule.forRoot(dataSourceOptions),
         TypeOrmModule.forFeature([Event]),
@@ -25,11 +25,11 @@ describe('EventValidationService', () => {
       providers: [EventService, EventValidationService, Repository<Event>],
     }).compile();
 
-    eventService = app.get<EventService>(EventService);
-    eventValidationService = app.get<EventValidationService>(
+    eventService = module.get<EventService>(EventService);
+    eventValidationService = module.get<EventValidationService>(
       EventValidationService,
     );
-    httpService = app.get<HttpService>(HttpService);
+    httpService = module.get<HttpService>(HttpService);
   });
 
   describe('isProtectedType', () => {

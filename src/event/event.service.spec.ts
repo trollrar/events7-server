@@ -21,7 +21,7 @@ describe('EventService', () => {
   let eventService: EventService;
 
   beforeEach(async () => {
-    const app: TestingModule = await Test.createTestingModule({
+    const module: TestingModule = await Test.createTestingModule({
       imports: [
         TypeOrmModule.forRoot(dataSourceOptions),
         TypeOrmModule.forFeature([Event]),
@@ -30,8 +30,8 @@ describe('EventService', () => {
       providers: [EventService, Repository<Event>],
     }).compile();
 
-    eventService = app.get<EventService>(EventService);
-    eventRepository = app.get(getRepositoryToken(Event));
+    eventService = module.get<EventService>(EventService);
+    eventRepository = module.get(getRepositoryToken(Event));
   });
 
   describe('findAll', () => {
